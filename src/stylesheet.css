@@ -9,34 +9,32 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: center;
-    background-color: #22272e;
     height: 100%;
+    align-items: center;
+    background-color: #11161C;
 }
 
 .gnosis-title {
-    text-align: center;
-    margin: 20px 0;
     display: flex;
     flex-direction: column;
-    color: #BC1018;
+    text-align: center;
+    margin: 30px 0 60px;
 }
 
 .gnosis-title h1 {
-    font-size: 60px;
-    margin-bottom: 10px;
+    color: #1A960F;
+    font-size: 64px;
+    margin-bottom: 15px;
 }
 
-
 .gnosis-title p {
-    font-weight: bolder;
-    color: gray
+    font-size: 18px;
+    color: white;
 }
 
 .gnosis-search {
     width: 100%;
-    max-width: 50%;
-    background-color: white;
+    max-width: 60%;
 }
 
 .gnosis-search-bar {
@@ -44,6 +42,11 @@
     padding: 20px 0;
     text-align: center;
     border: none;
+    background-color: #0E1217;
+    font-size: 22px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: white;
 }
 
 .gnosis-search-bar:active,
@@ -53,14 +56,35 @@
 }
 
 ::placeholder {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 400;
     text-transform: uppercase;
-}
-
-.gnosis-search-results table {
     color: white;
 }
+
+.gnosis-search-results {
+    width: 100%;
+    max-width: 60%;
+    margin-top: 30px;
+    background-color: #0E1217;
+}
+
+table {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.PaddingRow,
+.PaddingRowBottom {
+    padding: 15px 0;
+    border: 1px solid blue;
+}
+
+.TableClass {
+    padding: 0 20px;
+    color: white;
+}
+
 
 .gnosis-footer {
     margin-top: auto;
@@ -73,3 +97,4 @@
     color: gray;
     text-decoration: none;
 }
+
