@@ -59,7 +59,12 @@
             "execute",
             "arbitrary",
             "os",
-            "commands...",
+            "commands",
+            "on",
+            "the",
+            "underlying",
+            "host",
+            "system.",
             "an",
             "attacker",
             "can",
@@ -69,7 +74,7 @@
             "..."
         ],
         "title": "Command Injection",
-        "description": "Command injection vulnerabilities occurr when user input is included as part of a shell operation. As a result, it is possible to execute arbitrary OS commands...",
+        "description": "Command injection vulnerabilities occurr when user input is included as part of a shell operation. As a result, it is possible to execute arbitrary OS commands on the underlying host system.",
         "impact": "An attacker can execute arbitrary...",
         "mitigation": "It is highly recommended to ...",
         "references": [
