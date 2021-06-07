@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Oi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 * {
-    font-family: Roboto, sans-serif;
+    font-family: 'Commissioner', sans-serif;
     margin: 0;
     padding: 0;
     caret-color: red;
+}
+
+body {
+    background-color: #11161C;
 }
 
 .gnosis-body {
@@ -10,8 +17,9 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    max-width: 60%;
+    margin: auto;
     align-items: center;
-    background-color: #11161C;
 }
 
 .gnosis-title {
@@ -21,11 +29,19 @@
     margin: 30px 0 60px;
 }
 
-.gnosis-title h1 {
-    color: #1A960F;
+.gnosis-title p span{
+    font-family: 'Oi', sans-serif;
+    color: #265DEA;
     font-size: 64px;
     margin-bottom: 15px;
 }
+
+.gnosis-title p span:nth-child(1){filter: brightness(70%);}
+.gnosis-title p span:nth-child(2){filter: brightness(85%);}
+.gnosis-title p span:nth-child(3){filter: brightness(100%);}
+.gnosis-title p span:nth-child(4){filter: brightness(85%);}
+.gnosis-title p span:nth-child(5){filter: brightness(70%);}
+.gnosis-title p span:nth-child(6){filter: brightness(55%);}
 
 .gnosis-title p {
     font-size: 18px;
@@ -34,14 +50,14 @@
 
 .gnosis-search {
     width: 100%;
-    max-width: 60%;
 }
 
 .gnosis-search-bar {
     width: 100%;
     padding: 20px 0;
     text-align: center;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
     background-color: #0E1217;
     font-size: 22px;
     font-weight: 400;
@@ -62,39 +78,109 @@
     color: white;
 }
 
+.Results {
+    display: flex;
+    color: white;
+    margin-top: 25px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 4px;
+    background-color: #1B242E;
+    padding: 10px 10px;
+    align-items: center;
+    align-self: flex-start;
+}
+
+.Results p {
+    margin: 0 5px;
+}
+
+.Results p:nth-child(2) {
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: #265DEA;
+    font-weight: bold;
+    background-color: rgba(38, 93, 234, .3);
+}
+
 .gnosis-search-results {
     width: 100%;
-    max-width: 60%;
-    margin-top: 30px;
+    margin-top: 25px;
     background-color: #0E1217;
 }
 
 table {
     width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.PaddingRow,
-.PaddingRowBottom {
-    padding: 15px 0;
-    border: 1px solid blue;
-}
-
-.TableClass {
-    padding: 0 20px;
+    border-radius: 4px;
     color: white;
+    border-collapse: separate;
+    text-align: left;
+    border-spacing: 0 20px;
+    padding: 20px 20px 0;
 }
 
+thead tr {
+    box-shadow: 0 4px 2px -2px rgba(255, 255, 255, 0.1);
+}
+
+thead th {
+    padding: 0 80px 20px;
+}
+
+table tbody tr {
+    background-color: #11161C;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    border-radius: 4px;
+}
+
+tbody td {
+    padding: 40px 80px;
+}
+
+tbody td:first-child {
+    color: #265DEA;
+    font-weight: bolder;
+}
 
 .gnosis-footer {
     margin-top: auto;
     padding: 20px 0;
     color: gray;
     text-align: center;
+    color: white;
 }
 
-.gnosis-footer a {
-    color: gray;
+.ViewGitHub {
+    display: flex;
+    justify-content: center;
+}
+
+.ViewGitHub svg {
+    width: 20px;
+    margin-left: 5px;
+}
+
+.gnosis-footer > * + * {
+    margin-top: 10px;
+}
+
+.gnosis-footer p:nth-child(1) {
+    font-weight: bold;
+}
+
+.gnosis-footer p:nth-child(2) a {
+    color: white;
     text-decoration: none;
 }
 
+.gnosis-footer p:nth-child(3) a {
+    color: #265DEA;
+    text-decoration: none;
+}
+
+
+@media only screen and (max-width: 1100px) {
+    .gnosis-body {
+        max-width: 90%;
+    }
+}
