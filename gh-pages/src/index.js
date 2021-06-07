@@ -1,8 +1,9 @@
-var DATASET_URL = "./data/dataset.json";
-var MAXRESULTS = 25;
+import Fuse from './fuse.esm.js';
+const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
+const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
+const MAX_RESULTS = 25;
 
 var gnosis = {
-    oldColor: '',
     displayResults: function () {
         if (results.style) {
             results.style.display = '';
@@ -14,26 +15,6 @@ var gnosis = {
             results.style.display = 'none';
         }
         resultsTableHideable.classList.add('hide');
-    },
-    searchKB: function (match, dataset) {
-        results = [];
-
-        words = match.toLowerCase(); // tokenize?
-        words = words.split(' ');
-        regex = '';
-        // Lazy way to create regex (?=.*word1)(?=.*word2) this matches all words.
-        // regex infinite recursion?
-        for (i = 0; i < words.length; i++) {
-            regex += '(?=.*' + words[i] + ')';
-        }
-
-        dataset.forEach(e => {
-            // get tokenized value of element instead
-            var content = e.title.toLowerCase() + e.description.toLowerCase() + e.impact.toLowerCase() + e.mitigation.toLowerCase();
-            if (content.match(regex)) { results.push(e); }
-            ;
-        });
-        return results;
     },
     updateResults: function (loc, results) {
         if (results.length == 0) {
@@ -85,49 +66,45 @@ var gnosis = {
 window.gnosis = gnosis;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    gnosisSearchBar = document.querySelector('.gnosis-search-bar');
+    var gnosisSearchBar = document.querySelector('.gnosis-search-bar');
 
-    function doSearch(event) {
+    await fetch(ISSUES_DATASET_PATH)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.log("[Error] Could not get dataset.")
+            }
+        }).then(dataset => {
+            // TODO find fine-tuned options
+            const options = {
+                isCaseSensitive: false,
+                minMatchCharLength: 2,
+                threshold: 0.2,
+                shouldSort: true,
+                includeScore: true,
+                keys: ['title', 'description']
+            }
+            // Create the Fuse index
+            const myIndex = Fuse.createIndex(options.keys, dataset)
+            // dataset loaded, create Fuse instance in the 'tokens' parameter
+            window.fuse = new Fuse(dataset, options, myIndex);
+        });
+
+    async function doSearch() {
         var searchTerm = gnosisSearchBar.value;
 
         if (searchTerm != '') {
-            // controls.displayResults();
-            // currentSet = window.dataset;
-            // oldSearchValue = val;
+            var results = window.fuse.search(searchTerm);
+            console.log(JSON.stringify(results));
+            console.log(results.length)
 
-            // check if dataset is valid
-
-            console.log(searchTerm);
-            let res = window.gnosis.searchKB(searchTerm, window.dataset);
-            console.log(JSON.stringify(res));
-
+            // Update results
             // window.controls.updateResults(resultsTable, currentSet);
         } else {
-            // controls.hideResults();
-            // noResults.style.display = 'none';
-            // currentSet = window.dataset;
-
             // hide any visible results
         }
     }
-
-    await fetch('./data/dataset.json')
-        .then((res) => {
-            if (res.ok) { return res.json(); } else {
-                // set dataset to empty
-                window.dataset = [];
-                // handle error - show it in the UI
-                console.log("[Error] Could not load dataset.");
-            }
-        })
-        .then(data => {
-            // window.dataset = data;
-            // currentSet = window.dataset;
-            // window.controls.updateResults(resultsTable, window.dataset);
-            // doSearch({ type: 'none' });
-            console.log(data);
-            window.dataset = data;
-        });
 
     gnosisSearchBar.addEventListener("input", doSearch);
 });

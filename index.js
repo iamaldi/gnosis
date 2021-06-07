@@ -2,89 +2,85 @@ var md = require('markdown-it')();
 var fs = require('fs');
 var path = require('path');
 
-const DATASET_PATH = "/gh-pages/data/dataset.json";
-const CONTENT_PATH = "/content/";
+const ISSUES_DATASET_PATH = __dirname + "/gh-pages/dataset/issues/issues.json";
+const ISSUES_DATASET_INDEX_PATH = __dirname + "/gh-pages/dataset/issues/fuse-index.json";
+const CONTENT_PATH = __dirname + "/content/";
 
-var file = "test.md";
 var dataset = [];
 
+// tokenizing data here should help tokenizing time in the frontend
+// TODO use FuseJS to create the index of the dataset, don't do it in the front-end
 function tokenize(str) {
     var tokenizedArr = str.toLowerCase().split(" ");
     return [...new Set(tokenizedArr)];
 }
 
-var tmp = {
-    tokens: "",
-    title: "",
-    description: "",
-    impact: "",
-    mitigation: "",
-    references: []
-};
-
-
-function addToJSON(dataArray) {
-    var tmp1 = tmp;
-    tmp1.tokens = tokenize(dataArray[0] + " " + dataArray[1] + " " + dataArray[2] + " " + dataArray[3]);
-    tmp1.title = dataArray[0];
-    tmp1.description = dataArray[1];
-    tmp1.impact = dataArray[2];
-    tmp1.mitigation = dataArray[3];
-
-    tmp1.references = [dataArray[4], dataArray[5]];
-    dataset.push(tmp1); // add to dataset
+function addIssueToDataset(rowData) {
+    const issue = {
+        tokens: tokenize(
+            rowData[0]
+            + " " + rowData[1]
+            + " " + rowData[2]
+            + " " + rowData[3]),
+        title: rowData[0],
+        description: rowData[1],
+        impact: rowData[2],
+        mitigation: rowData[3],
+        references: [rowData[4], rowData[5]]
+    };
+    // add to dataset
+    dataset.push(issue);
 }
 
-
-
-// parses data from table row
-function extractRowData(row, offset) {
-    var tmpData = [];
+function extractTableRowData(row, offset) {
+    var rowData = [];
+    var i;
     for (i = offset; i < row.length; i++) {
+        // we reached the end of the table row
         if (row[i].type === 'tr_close') {
-            // console.log(row[i])
-            // row content is consumed, call util function to add it to dataset
-            filtered = tmpData.filter(String);
-            addToJSON(filtered);
+            // remove any unwanted spaces
+            filtered = rowData.filter(String);
+            // add it to the dataset
+            addIssueToDataset(filtered);
             return i;
         }
-        tmpData.push(row[i].content);
+        // there's more row data to consume
+        rowData.push(row[i].content);
     }
 }
 
-// parses table data from table
-function extractTableData(tokens, offset) {
-    var data = [];
-    // Start at whatever the offset + 20 in order to skip the table headers and start consuming each row
-    for (i = offset + 20; i < tokens.length; i++) {
-        if (tokens[i].type === 'inline') {
-            console.log(tokens[i]);
-            i = extractRowData(tokens, i);
-        } else if (tokens[i].type === 'table_close') {
-            // table parsed
+function extractTableData(table, offset) {
+    var i;
+    // start at whatever the offset + 20 in order to skip the table headers
+    for (i = offset + 20; i < table.length; i++) {
+        // if this is a table row
+        if (table[i].type === 'inline') {
+            // start consuming it
+            i = extractTableRowData(table, i); // when it returns move the index at the end of the row
+        } else if (table[i].type === 'table_close') {
+            // we consumed the whole table
             return i;
         }
     }
 }
 
-function doIt(data) {
-    var result = md.parse(data.toString());
+function extractIssuesData(markdownData) {
+    var i;
+    var parsedMarkdownData = md.parse(markdownData.toString());
     // start with i=0, technically starting at the first row with content
-    for (i = 0; i < result.length; i++) {
-        // find where the markdown table starts and ends
-        if (result[i].type === 'table_open') {
-            //start table processing
-            i = extractTableData(result, i)
+    for (i = 0; i < parsedMarkdownData.length; i++) {
+        // this is the start of the markdown table
+        if (parsedMarkdownData[i].type === 'table_open') {
+            // start table processing
+            i = extractTableData(parsedMarkdownData, i)
         }
     }
 }
 
-
-
-var results = [];
-
-var walk = function (dir, done) {
-    fs.readdir(dir, function (err, list) {
+// Recursive directory search- https://stackoverflow.com/a/5827895
+var findMdFilesInDirRecursive = (dir, done) => {
+    var results = [];
+    fs.readdir(dir, (err, list) => {
         if (err) return done(err);
         var i = 0;
         (function next() {
@@ -93,7 +89,7 @@ var walk = function (dir, done) {
             file = path.resolve(dir, file);
             fs.stat(file, function (err, stat) {
                 if (stat && stat.isDirectory()) {
-                    walk(file, function (err, res) {
+                    findMdFilesInDirRecursive(file, (err, res) => {
                         results = results.concat(res);
                         next();
                     });
@@ -105,39 +101,29 @@ var walk = function (dir, done) {
         })();
     });
 };
-walk(__dirname + CONTENT_PATH, function (err, results) {
-    if (err) throw err;
-    results = ([...new Set(results)]);
-});
 
-// // read all markdown files inside content dir
-for (i = 0; i < results.length; i++) {
-    a(results[i])
-    console.log(1)
+function writeDatasetToDisk(dataset, datasetDestinationPath) {
+    fs.writeFileSync(datasetDestinationPath, JSON.stringify(dataset, null, 4), 'utf8');
 }
 
-fs.readFile("test.md", 'utf8', (err, data) => {
-    if (err) {
-        console.error(err);
-        return;
+function prepareIssuesDataset(files) {
+    var i;
+    for (i = 0; i < files.length; i++) {
+        // read file contents
+        var markdownData = fs.readFileSync(files[i], 'utf8');
+        extractIssuesData(markdownData);
     }
-    doIt(data);
-    console.log(dataset);
-})
+}
 
-// writeFile(__dirname + DATASET_PATH, JSON.stringify(dataset, null, 4), 'utf8')
+findMdFilesInDirRecursive(CONTENT_PATH, (err, results) => {
+    if (err) {
+        console.log("[findMdFilesInDirRecursive] Error, could not read directory files.");
+    }
+    var files = ([...new Set(results)]);
 
-// write data to disk
-// fs.writeFile(__dirname + DATASET_PATH, JSON.stringify(dataset, null, 4), 'utf8', (err) => {
-//     if (err) {
-//         throw err;
-//     }
-//     console.log("[Info] Dataset writen to disk.");
-// });
+    console.log("[prepareIssuesDataset] Initializing issues dataset processing.");
+    prepareIssuesDataset(files);
 
-
-
-
-
-
-
+    console.log("[writeDatasetToDisk] Writing dataset to disk.");
+    writeDatasetToDisk(dataset, ISSUES_DATASET_PATH);
+});
