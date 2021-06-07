@@ -31,7 +31,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Commit changes
         run: |
-          git config --global user.name 'iamaldi'
+          git config --global user.name 'GNOSIS'
           git config --global user.email 'iamaldi@users.noreply.github.com'
-          git commit -am "Automated Dataset Generation"
+          git commit -am "GNOSIS Dataset Generation"
           git push
