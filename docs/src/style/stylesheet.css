@@ -5,7 +5,6 @@
     font-family: 'Commissioner', sans-serif;
     margin: 0;
     padding: 0;
-    caret-color: red;
 }
 
 body {
@@ -64,7 +63,7 @@ body {
     font-weight: 400;
     text-transform: uppercase;
     color: white;
-    background-image: url("./search.svg");
+    background-image: url("./../img/search.svg");
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 20px;
