@@ -24,65 +24,20 @@
             </input>
         </div>
 
-        <div class="Results">
+        <div class="Results Hidden">
             <p>Results</p>
-
             <p>300</p>
         </div>
 
         <div class="gnosis-search-results">
-            <table class="OuterTable">
+            <table class="OuterTable Hidden">
                 <thead>
                     <tr>
-                        <th>
-                            Title
-                        </th>
-                        <th>
-                            Description
-                        </th>
+                        <th>Title</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="OuterTr">
-                        <td colspan="2">
-                            <table class="InsideTable">
-                                <tr>
-                                    <td>
-                                        <p>A10 - Using Components with Known Vulnerabilities</p>
-                                    </td>
-                                    <td>
-                                        <p> Description Text</p>
-                                    </td>
-
-                                </tr>
-                            </table>
-
-                            <table class="ExtraInsideTable Hidden">
-                                <div class="UnderLine Hidden"></div>
-                                <tr>
-                                    <td>Impact</td>
-                                    <td> Impact Text</td>
-                                </tr>
-                            </table>
-
-                            <table class="ExtraInsideTable Hidden">
-                                <tr>
-                                    <td>Mitigation</td>
-                                    <td> Mitigation Text
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table class="ExtraInsideTable References Hidden">
-                                <tr>
-                                    <td>References</td>
-                                    <td><a href="https://owasp.org" target="_blank">https://owasp.org.</a></td>
-                                </tr>
-                            </table>
-
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>
@@ -105,22 +60,7 @@
             <p>Designed by <a href="https://dribbble.com/Screamfull" target="_blank">Screamfull</a></p>
         </div>
     </div>
-    <script type="module" src="./src/index.js">
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var item = document.getElementsByClassName("InsideTable")[0];
-            item.addEventListener("click", () => {
-                var item2 = document.getElementsByClassName("ExtraInsideTable");
-                var i;
-                for (i = 0; i < item2.length; i++) {
-                    if (item2[i].style.display === "none") {
-                        item2[i].style.display = "table"
-                    } else {
-                        item2[i].style.display = "none"
-                    }
-                }
-            })
-        });
-    </script>
+    <script type="module" src="./src/index.js"></script>
 </body>
 
 </html>

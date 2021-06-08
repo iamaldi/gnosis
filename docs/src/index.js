@@ -3,70 +3,96 @@ const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
 const MAX_RESULTS = 25;
 
-var gnosis = {
-    displayResults: function () {
-        if (results.style) {
-            results.style.display = '';
-        }
-        resultsTableHideable.classList.remove('hide');
-    },
-    hideResults: function () {
-        if (results.style) {
-            results.style.display = 'none';
-        }
-        resultsTableHideable.classList.add('hide');
-    },
-    updateResults: function (loc, results) {
-        if (results.length == 0) {
-            noResults.style.display = '';
-            noResults.textContent = 'No Results Found';
+var resultTableItem = '<tr class="OuterTr" onclick="window.gnosis.expandDetails(this)"><td colspan="2">$resultDetails</td></tr>';
+var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td></tr></table>';
+var impactTable = '<table class="ExtraInsideTable Hidden"><div class="UnderLine Hidden"></div><tr><td><p>Impact</p></td><td><p>$impact</p></td></tr></table>';
+var mitigationTable = '<table class="ExtraInsideTable Hidden"><tr><td>Mitigation</td><td>$mitigation</td></tr></table>';
+var referenceTable = '<table class="ExtraInsideTable References Hidden"><tr><td>References</td><td>$referenceItems</td></tr></table></td>'
+var referenceItem = '<a href="$referenceURL" target="_blank">$referenceURL</a>';
 
-            resultsTableHideable.classList.add('hide');
-        } else if (results.length > totalLimit) {
-            noResults.style.display = '';
-            resultsTableHideable.classList.add('hide');
-            noResults.textContent = 'Error: ' + results.length + ' results were found, try being more specific';
-            this.setColor(colorUpdate, 'too-many-results');
+var gnosis = {
+    updateResultsCounter(show, totalResults) {
+        var resultsDiv = document.querySelector(".Results");
+        var resultsCounter = resultsDiv.querySelectorAll("p")[1];
+        if (show) {
+            resultsCounter.textContent = totalResults;
+            resultsDiv.style.display = "flex";
         } else {
-            var tableRows = loc.getElementsByTagName('tr');
-            for (var x = tableRows.length - 1; x >= 0; x--) {
-                loc.removeChild(tableRows[x]);
+            resultsDiv.style.display = "none";
+        }
+    },
+    expandDetails(resultElement) {
+        var horizontalLine = resultElement.querySelector(".UnderLine");
+        var horizontalLineComputedStyle = window.getComputedStyle(horizontalLine);
+        var resultElementChildren = resultElement.querySelectorAll(".ExtraInsideTable");
+
+        if (horizontalLineComputedStyle.display === "none") {
+            horizontalLine.style.display = "block";
+        } else {
+            horizontalLine.style.display = "none";
+        }
+
+        var i;
+        for (i = 0; i < resultElementChildren.length; i++) {
+            var currentStyle = window.getComputedStyle(resultElementChildren[i]);
+            if (currentStyle.display == "none") {
+                resultElementChildren[i].style.display = "table";
+            } else {
+                resultElementChildren[i].style.display = "none"
+            }
+        }
+    },
+    displayResults(resultsTable, results) {
+        var resultTitleAndDescriptionElem;
+        var impactTableElem;
+        var mitigationTableElem;
+        var references;
+        var resultItemElem;
+        var referenceItemElem;
+        var referenceItemsElem = [];
+        var referenceTableElem;
+        var resultDetailsElem;
+
+        results.forEach(result => {
+            // fill in the result details
+            resultTitleAndDescriptionElem = titleAndDescriptionTable
+                .replace('$title', result.item.title)
+                .replace("$description", result.item.description);
+
+            impactTableElem = impactTable
+                .replace("$impact", result.item.impact);
+
+            mitigationTableElem = mitigationTable
+                .replace("$mitigation", result.item.mitigation);
+
+            references = result.item.references;
+
+            if (references.length > 0) {
+                references.forEach(reference => {
+                    referenceItemElem = referenceItem.replace("$referenceURL", reference);
+                    referenceItemsElem.push(referenceItemElem);
+                })
+                referenceTableElem = referenceTable.replace("$referenceItems", referenceItemsElem);
+            } else {
+                // add an N/A to the references
+                referenceTableElem = referenceTable.replace("$referenceItems", "N/A");
             }
 
-            noResults.style.display = 'none';
-            resultsTableHideable.classList.remove('hide');
-
-            results.forEach(r => {
-                //Not the fastest but it makes for easier to read code :>
-
-                if (r.academy) {
-                    el = searchResultFormat
-                        .replace('$machine', r.machine)
-                        .replace('$line', r.line)
-                        .replace('$link', linkTemplateAcademy.replace('$course', r.academy));
-
-                } else {
-                    timeInSeconds = r.timestamp.minutes * 60 + r.timestamp.seconds;
-                    el = searchResultFormat
-                        .replace('$machine', r.machine)
-                        .replace('$line', r.line)
-                        .replace('$link', linkTemplate.replace('$video', r.videoId).replace('$time', timeInSeconds));
-                };
-
-                var wrapper = document.createElement('table');
-                wrapper.innerHTML = el;
-                var div = wrapper.querySelector('tr');
-
-                loc.appendChild(div);
-            });
-        }
+            // add result to table
+            resultDetailsElem = resultTitleAndDescriptionElem + impactTableElem + mitigationTableElem + referenceTableElem;
+            resultItemElem = resultTableItem.replace("$resultDetails", resultDetailsElem);
+            resultsTable.innerHTML += resultItemElem;
+        });
     }
 };
 
 window.gnosis = gnosis;
 
 document.addEventListener('DOMContentLoaded', async () => {
+    var resultsTable = document.querySelector(".OuterTable");
+    var resultsTableBody = resultsTable.getElementsByTagName("tbody")[0];
     var gnosisSearchBar = document.querySelector('.gnosis-search-bar');
+    gnosisSearchBar.focus();
 
     await fetch(ISSUES_DATASET_PATH)
         .then((response) => {
@@ -93,16 +119,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function doSearch() {
         var searchTerm = gnosisSearchBar.value;
+        resultsTableBody.innerHTML = '';
+        resultsTable.style.display = "none";
 
         if (searchTerm != '') {
             var results = window.fuse.search(searchTerm);
-            console.log(JSON.stringify(results));
-            console.log(results.length)
+            // show and update the results counter
+            window.gnosis.updateResultsCounter(true, results.length);
 
-            // Update results
-            // window.controls.updateResults(resultsTable, currentSet);
+            if (results.length == 0) {
+                // show no results error
+            } else {
+                // display results
+                resultsTable.style.display = "table";
+                window.gnosis.displayResults(resultsTableBody, results);
+            }
         } else {
-            // hide any visible results
+            // hide the visible results counter
+            window.gnosis.updateResultsCounter(false, 0);
+
+            // make results table empty
         }
     }
 
