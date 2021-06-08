@@ -55,6 +55,7 @@ body {
 .gnosis-search-bar {
     width: 100%;
     padding: 20px 0;
+    display: flex;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
@@ -63,6 +64,10 @@ body {
     font-weight: 400;
     text-transform: uppercase;
     color: white;
+    background-image: url("./search.svg");
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 20px;
 }
 
 .gnosis-search-bar:active,
@@ -75,7 +80,7 @@ body {
     font-size: 22px;
     font-weight: 400;
     text-transform: uppercase;
-    color: white;
+    color: #767D94;
 }
 
 .Results {
@@ -133,6 +138,16 @@ body {
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     border-radius: 4px;
 }
+
+.InsideTable {
+    cursor: pointer;
+}
+
+.InsideTable td:last-child p,
+.ExtraInsideTable td:last-child p {
+    cursor: auto;
+}
+
 
 .InsideTable tbody td,
 .ExtraInsideTable tbody td {
