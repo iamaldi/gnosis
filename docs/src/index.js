@@ -69,10 +69,10 @@ var gnosis = {
 
             if (references.length > 0) {
                 references.forEach(reference => {
-                    referenceItemElem = referenceItem.replace("$referenceURL", reference);
+                    referenceItemElem = referenceItem.replaceAll("$referenceURL", reference);
                     referenceItemsElem.push(referenceItemElem);
                 })
-                referenceTableElem = referenceTable.replace("$referenceItems", referenceItemsElem);
+                referenceTableElem = referenceTable.replace("$referenceItems", referenceItemsElem.join(""));
             } else {
                 // add an N/A to the references
                 referenceTableElem = referenceTable.replace("$referenceItems", "N/A");
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 threshold: 0.2,
                 shouldSort: true,
                 includeScore: true,
-                keys: ['title', 'description']
+                keys: ['title', 'description', 'impact', 'mitigation', 'references']
             }
             // Create the Fuse index
             const myIndex = Fuse.createIndex(options.keys, dataset)
