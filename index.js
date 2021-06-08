@@ -2,8 +2,8 @@ var md = require('markdown-it')();
 var fs = require('fs');
 var path = require('path');
 
-const ISSUES_DATASET_PATH = __dirname + "/gh-pages/dataset/issues/issues.json";
-const ISSUES_DATASET_INDEX_PATH = __dirname + "/gh-pages/dataset/issues/fuse-index.json";
+const ISSUES_DATASET_PATH = __dirname + "/docs/datasets/issues/issues.json";
+const ISSUES_DATASET_INDEX_PATH = __dirname + "/docs/datasets/issues/fuse-index.json";
 const CONTENT_PATH = __dirname + "/content/";
 
 var dataset = [];
