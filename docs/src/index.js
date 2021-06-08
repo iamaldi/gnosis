@@ -3,12 +3,13 @@ const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
 const MAX_RESULTS = 25;
 
-var resultTableItem = '<tr class="OuterTr" onclick="window.gnosis.expandDetails(this)"><td colspan="2">$resultDetails</td></tr>';
+var resultTableItem = '<tr class="OuterTr"><td colspan="2">$resultDetails</td></tr>';
 var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td></tr></table>';
 var impactTable = '<table class="ExtraInsideTable Hidden"><div class="UnderLine Hidden"></div><tr><td><p>Impact</p></td><td><p>$impact</p></td></tr></table>';
 var mitigationTable = '<table class="ExtraInsideTable Hidden"><tr><td>Mitigation</td><td>$mitigation</td></tr></table>';
 var referenceTable = '<table class="ExtraInsideTable References Hidden"><tr><td>References</td><td>$referenceItems</td></tr></table></td>'
 var referenceItem = '<a href="$referenceURL" target="_blank">$referenceURL</a>';
+var dropdown = '<div class="Dropdown"><p onclick="window.gnosis.expandDetails(this)">X</p></div>';
 
 var gnosis = {
     updateResultsCounter(show, totalResults) {
@@ -29,7 +30,7 @@ var gnosis = {
         if (horizontalLineComputedStyle.display === "none") {
             horizontalLine.style.display = "block";
         } else {
-            horizontalLine.style.display = "none";
+            return;
         }
 
         var i;
@@ -41,6 +42,11 @@ var gnosis = {
                 resultElementChildren[i].style.display = "none"
             }
         }
+    },
+    collapseDetails(resultElement) {
+        var test = resultElement.parentElement.parentElement;
+        var aa = test.getElementsByTagName("tr")[0];
+        console.log(aa);
     },
     displayResults(resultsTable, results) {
         var resultTitleAndDescriptionElem;
@@ -79,7 +85,7 @@ var gnosis = {
             }
 
             // add result to table
-            resultDetailsElem = resultTitleAndDescriptionElem + impactTableElem + mitigationTableElem + referenceTableElem;
+            resultDetailsElem = resultTitleAndDescriptionElem + dropdown + impactTableElem + mitigationTableElem + referenceTableElem;
             resultItemElem = resultTableItem.replace("$resultDetails", resultDetailsElem);
             resultsTable.innerHTML += resultItemElem;
         });
