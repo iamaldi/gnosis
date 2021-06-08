@@ -163,15 +163,10 @@ body::-webkit-scrollbar {
     font-weight: 400;
 }
 
-.InsideTable {
-    cursor: pointer;
-}
-
 .InsideTable td:nth-child(2) p,
 .ExtraInsideTable td:last-child p {
     cursor: auto;
 }
-
 
 .ToggleButton {
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -228,10 +223,6 @@ body::-webkit-scrollbar {
     margin-left: 60px;
     margin-right: 30px;
     background-color: rgba(255, 255, 255, .1);
-}
-
-.Dropdown p {
-
 }
 
 .Hidden {
@@ -315,7 +306,6 @@ body::-webkit-scrollbar {
     color: #265DEA;
     text-decoration: none;
 }
-
 
 @media only screen and (max-width: 1350px) {
     .gnosis-body {

@@ -1,16 +1,15 @@
 import Fuse from './fuse.esm.js';
 const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
-const MAX_RESULTS = 25;
-var arrowDown = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="2.65 7.68 3.35 6.97 12 15.62 20.65 6.97 21.35 7.68 12 17.03 2.65 7.68"/></svg>';
+const MAX_RESULTS = 50;
 
 var resultTableItem = '<tr class="OuterTr"><td colspan="2">$resultDetails</td></tr>';
 var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td><td class="ToggleButtonCollumn"><div class="ToggleButton" onclick="window.gnosis.expandDetails(this.parentElement)">$arrowDown</div></td></tr></table>';
 var impactTable = '<table class="ExtraInsideTable Hidden"><div class="UnderLine Hidden"></div><tr><td><p>Impact</p></td><td><p>$impact</p></td></tr></table>';
 var mitigationTable = '<table class="ExtraInsideTable Hidden"><tr><td>Mitigation</td><td>$mitigation</td></tr></table>';
-var referenceTable = '<table class="ExtraInsideTable References Hidden"><tr><td>References</td><td>$referenceItems</td></tr></table></td>'
+var referenceTable = '<table class="ExtraInsideTable References Hidden"><tr><td>References</td><td>$referenceItems</td></tr></table></td>';
 var referenceItem = '<a href="$referenceURL" target="_blank">$referenceURL</a>';
-var dropdown = '<div class="Dropdown"><p onclick="window.gnosis.expandDetails(this)">X</p></div>';
+var arrowDown = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="2.65 7.68 3.35 6.97 12 15.62 20.65 6.97 21.35 7.68 12 17.03 2.65 7.68"/></svg>';
 
 var gnosis = {
     updateResultsCounter(show, totalResults) {
@@ -59,7 +58,14 @@ var gnosis = {
         var referenceTableElem;
         var resultDetailsElem;
 
+        var i = 0;
         results.forEach(result => {
+            if(i >= MAX_RESULTS){
+                console.log("[GNOSIS] Maximum number of results displayed reached.");
+                return;
+            } else {
+                i++;
+            }
             // fill in the result details
             resultTitleAndDescriptionElem = titleAndDescriptionTable
                 .replace('$title', result.item.title)
@@ -136,6 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (results.length == 0) {
                 // show no results error
+                console.log("[GNOSIS] Couldn't find any results.");
             } else {
                 // display results
                 resultsTable.style.display = "table";
@@ -144,10 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             // hide the visible results counter
             window.gnosis.updateResultsCounter(false, 0);
-
-            // make results table empty
         }
     }
-
     gnosisSearchBar.addEventListener("input", doSearch);
 });

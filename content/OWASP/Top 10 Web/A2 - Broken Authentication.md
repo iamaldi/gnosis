@@ -2,4 +2,4 @@
 
 | Type | Description | Impact | Mitigation | OWASP | CWE |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| Text | Text | Text | Text | URL to OWASP | URL to CWE |
+| Authentication Bypass | An authentication bypass is ... | An adversary can ... | It is advised that ... | https://owasp.org/www-project-top-ten/2017/A2_2017-Broken_Authentication | https://cwe.mitre.org/data/definitions/288.html |
