@@ -18,16 +18,16 @@
             "result,",
             "it",
             "possible",
-            "to...",
+            "to",
+            "...",
             "adversaries",
             "can",
-            "...",
             "use",
             "prepared",
             "statements."
         ],
         "title": "SQL Injection",
-        "description": "SQL Injection vulnerabilities occurr when user-supplied data is concatenated as part of SQL queries. As a result, it is possible to...",
+        "description": "SQL Injection vulnerabilities occurr when user-supplied data is concatenated as part of SQL queries. As a result, it is possible to ...",
         "impact": "Adversaries can ...",
         "mitigation": "Use prepared statements.",
         "references": [
@@ -68,14 +68,13 @@
             "an",
             "attacker",
             "can",
-            "arbitrary...",
+            "...",
             "highly",
-            "recommended",
-            "..."
+            "recommended"
         ],
         "title": "Command Injection",
         "description": "Command injection vulnerabilities occurr when user input is included as part of a shell operation. As a result, it is possible to execute arbitrary OS commands on the underlying host system.",
-        "impact": "An attacker can execute arbitrary...",
+        "impact": "An attacker can execute arbitrary ...",
         "mitigation": "It is highly recommended to ...",
         "references": [
             "https://owasp.org/www-community/attacks/Command_Injection",
@@ -84,15 +83,24 @@
     },
     {
         "tokens": [
-            "text"
+            "authentication",
+            "bypass",
+            "an",
+            "is",
+            "...",
+            "adversary",
+            "can",
+            "it",
+            "advised",
+            "that"
         ],
-        "title": "Text",
-        "description": "Text",
-        "impact": "Text",
-        "mitigation": "Text",
+        "title": "Authentication Bypass",
+        "description": "An authentication bypass is ...",
+        "impact": "An adversary can ...",
+        "mitigation": "It is advised that ...",
         "references": [
-            "URL to OWASP",
-            "URL to CWE"
+            "https://owasp.org/www-project-top-ten/2017/A2_2017-Broken_Authentication",
+            "https://cwe.mitre.org/data/definitions/288.html"
         ]
     }
 ]
