@@ -1,0 +1,98 @@
+[
+    {
+        "tokens": [
+            "sql",
+            "injection",
+            "vulnerabilities",
+            "occurr",
+            "when",
+            "user-supplied",
+            "data",
+            "is",
+            "concatenated",
+            "as",
+            "part",
+            "of",
+            "queries.",
+            "a",
+            "result,",
+            "it",
+            "possible",
+            "to...",
+            "adversaries",
+            "can",
+            "...",
+            "use",
+            "prepared",
+            "statements."
+        ],
+        "title": "SQL Injection",
+        "description": "SQL Injection vulnerabilities occurr when user-supplied data is concatenated as part of SQL queries. As a result, it is possible to...",
+        "impact": "Adversaries can ...",
+        "mitigation": "Use prepared statements.",
+        "references": [
+            "https://owasp.org/www-project-top-ten/2017/A1_2017-Injection",
+            "https://cwe.mitre.org/data/definitions/89.html"
+        ]
+    },
+    {
+        "tokens": [
+            "command",
+            "injection",
+            "vulnerabilities",
+            "occurr",
+            "when",
+            "user",
+            "input",
+            "is",
+            "included",
+            "as",
+            "part",
+            "of",
+            "a",
+            "shell",
+            "operation.",
+            "result,",
+            "it",
+            "possible",
+            "to",
+            "execute",
+            "arbitrary",
+            "os",
+            "commands",
+            "on",
+            "the",
+            "underlying",
+            "host",
+            "system.",
+            "an",
+            "attacker",
+            "can",
+            "arbitrary...",
+            "highly",
+            "recommended",
+            "..."
+        ],
+        "title": "Command Injection",
+        "description": "Command injection vulnerabilities occurr when user input is included as part of a shell operation. As a result, it is possible to execute arbitrary OS commands on the underlying host system.",
+        "impact": "An attacker can execute arbitrary...",
+        "mitigation": "It is highly recommended to ...",
+        "references": [
+            "https://owasp.org/www-community/attacks/Command_Injection",
+            "https://cwe.mitre.org/data/definitions/77.html"
+        ]
+    },
+    {
+        "tokens": [
+            "text"
+        ],
+        "title": "Text",
+        "description": "Text",
+        "impact": "Text",
+        "mitigation": "Text",
+        "references": [
+            "URL to OWASP",
+            "URL to CWE"
+        ]
+    }
+]
