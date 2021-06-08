@@ -2,9 +2,10 @@ import Fuse from './fuse.esm.js';
 const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
 const MAX_RESULTS = 25;
+var arrowDown = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="2.65 7.68 3.35 6.97 12 15.62 20.65 6.97 21.35 7.68 12 17.03 2.65 7.68"/></svg>';
 
 var resultTableItem = '<tr class="OuterTr"><td colspan="2">$resultDetails</td></tr>';
-var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td></tr></table>';
+var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td><td class="ToggleButtonCollumn"><div class="ToggleButton" onclick="window.gnosis.expandDetails(this.parentElement)">$arrowDown</div></td></tr></table>';
 var impactTable = '<table class="ExtraInsideTable Hidden"><div class="UnderLine Hidden"></div><tr><td><p>Impact</p></td><td><p>$impact</p></td></tr></table>';
 var mitigationTable = '<table class="ExtraInsideTable Hidden"><tr><td>Mitigation</td><td>$mitigation</td></tr></table>';
 var referenceTable = '<table class="ExtraInsideTable References Hidden"><tr><td>References</td><td>$referenceItems</td></tr></table></td>'
@@ -23,14 +24,18 @@ var gnosis = {
         }
     },
     expandDetails(resultElement) {
+        resultElement = resultElement.parentElement.parentElement.parentElement.parentElement.parentNode;
+        var toggleButton = resultElement.querySelector(".ToggleButton svg")
+        console.log(toggleButton)
         var horizontalLine = resultElement.querySelector(".UnderLine");
         var horizontalLineComputedStyle = window.getComputedStyle(horizontalLine);
         var resultElementChildren = resultElement.querySelectorAll(".ExtraInsideTable");
 
+        toggleButton.classList.toggle("Rotate");
         if (horizontalLineComputedStyle.display === "none") {
             horizontalLine.style.display = "block";
         } else {
-            return;
+            horizontalLine.style.display = "none";
         }
 
         var i;
@@ -42,11 +47,6 @@ var gnosis = {
                 resultElementChildren[i].style.display = "none"
             }
         }
-    },
-    collapseDetails(resultElement) {
-        var test = resultElement.parentElement.parentElement;
-        var aa = test.getElementsByTagName("tr")[0];
-        console.log(aa);
     },
     displayResults(resultsTable, results) {
         var resultTitleAndDescriptionElem;
@@ -63,7 +63,8 @@ var gnosis = {
             // fill in the result details
             resultTitleAndDescriptionElem = titleAndDescriptionTable
                 .replace('$title', result.item.title)
-                .replace("$description", result.item.description);
+                .replace("$description", result.item.description)
+                .replace("$arrowDown", arrowDown);
 
             impactTableElem = impactTable
                 .replace("$impact", result.item.impact);
@@ -85,7 +86,7 @@ var gnosis = {
             }
 
             // add result to table
-            resultDetailsElem = resultTitleAndDescriptionElem + dropdown + impactTableElem + mitigationTableElem + referenceTableElem;
+            resultDetailsElem = resultTitleAndDescriptionElem + impactTableElem + mitigationTableElem + referenceTableElem;
             resultItemElem = resultTableItem.replace("$resultDetails", resultDetailsElem);
             resultsTable.innerHTML += resultItemElem;
         });

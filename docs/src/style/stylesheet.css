@@ -76,11 +76,13 @@ body::-webkit-scrollbar {
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 20px;
+    transition: .2s ease;
 }
 
-.gnosis-search-bar:active,
+
 .gnosis-search-bar:focus {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(38, 93, 234, 1);
+    box-shadow: 0 0 0 4px rgba(38, 93, 234, .3);
     outline: none;
 }
 
@@ -165,16 +167,48 @@ body::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.InsideTable td:last-child p,
+.InsideTable td:nth-child(2) p,
 .ExtraInsideTable td:last-child p {
     cursor: auto;
 }
 
 
+.ToggleButton {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s ease;
+}
+
+.ToggleButton:hover {
+    background-color: #0E1217;
+}
+
+.ToggleButton svg {
+    width: 20px;
+    height: 15px;
+    fill: #FFFFFF;
+    transition: .3s ease;
+}
+
+.Rotate {
+    transform: rotate(180deg);
+}
+
 .InsideTable tbody td,
 .ExtraInsideTable tbody td {
     padding: 20px 80px 20px 60px;
 }
+
+.InsideTable tbody td:last-child{
+    /* width: 100px; */
+    padding: 0 20px 0 0;
+}
+
 
 .InsideTable td:first-child {
     color: #265DEA;
