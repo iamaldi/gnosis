@@ -79,6 +79,9 @@ body::-webkit-scrollbar {
     transition: .2s ease;
 }
 
+.gnosis-search-bar:hover {
+    border: 1px solid rgba(255, 255, 255, .3);
+}
 
 .gnosis-search-bar:focus {
     border: 1px solid rgba(38, 93, 234, 1);
@@ -156,6 +159,7 @@ body::-webkit-scrollbar {
     background-color: #11161C;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     border-radius: 4px;
+    transition: .3s ease;
 }
 
 .OuterTable thead tr p {
@@ -166,6 +170,15 @@ body::-webkit-scrollbar {
 .InsideTable td:nth-child(2) p,
 .ExtraInsideTable td:last-child p {
     cursor: auto;
+}
+
+.TableNumNum:hover {
+    box-shadow: 0 0 0 1px #265DEA inset;
+}
+
+.TableNumNumFocus {
+    box-shadow: 0 0 0 1px #265DEA inset;
+    background-color: #1B242E;
 }
 
 .ToggleButton {
@@ -201,7 +214,7 @@ body::-webkit-scrollbar {
 }
 
 .InsideTable tbody td:last-child{
-    /* width: 100px; */
+    width: 42px;
     padding: 0 20px 0 0;
 }
 

@@ -3,7 +3,7 @@ const ISSUES_DATASET_PATH = "./dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = "./dataset/issues/fuse-index.json";
 const MAX_RESULTS = 50;
 
-var resultTableItem = '<tr class="OuterTr"><td colspan="2">$resultDetails</td></tr>';
+var resultTableItem = '<tr class="OuterTr"><td class="TableNumNum" colspan="2">$resultDetails</td></tr>';
 var titleAndDescriptionTable = '<table class="InsideTable"><tr><td><p>$title</p></td><td><p>$description</p></td><td class="ToggleButtonCollumn"><div class="ToggleButton" onclick="window.gnosis.expandDetails(this.parentElement)">$arrowDown</div></td></tr></table>';
 var impactTable = '<table class="ExtraInsideTable Hidden"><div class="UnderLine Hidden"></div><tr><td><p>Impact</p></td><td><p>$impact</p></td></tr></table>';
 var mitigationTable = '<table class="ExtraInsideTable Hidden"><tr><td>Mitigation</td><td>$mitigation</td></tr></table>';
@@ -24,13 +24,14 @@ var gnosis = {
     },
     expandDetails(resultElement) {
         resultElement = resultElement.parentElement.parentElement.parentElement.parentElement.parentNode;
-        var toggleButton = resultElement.querySelector(".ToggleButton svg")
-        console.log(toggleButton)
+        var toggleButton = resultElement.querySelector(".ToggleButton svg");
+        var tableNumNum = resultElement.querySelector(".TableNumNum");
         var horizontalLine = resultElement.querySelector(".UnderLine");
         var horizontalLineComputedStyle = window.getComputedStyle(horizontalLine);
         var resultElementChildren = resultElement.querySelectorAll(".ExtraInsideTable");
-
+        
         toggleButton.classList.toggle("Rotate");
+        tableNumNum.classList.toggle("TableNumNumFocus");
         if (horizontalLineComputedStyle.display === "none") {
             horizontalLine.style.display = "block";
         } else {
