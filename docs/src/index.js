@@ -100,7 +100,6 @@ var gnosis = {
             resultDetailsElem = resultTitleAndDescriptionElem + impactTableElem + mitigationTableElem + referenceTableElem;
             resultItemElem = resultTableItem.replace("$resultDetails", resultDetailsElem);
             resultsTable.innerHTML += resultItemElem;
-            referenceItemsElem = [];
         });
     }
 };
