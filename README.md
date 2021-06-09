@@ -3,7 +3,7 @@ A collaborative knowledge base implemented using Markdown, GitHub Pages, and Git
 
 ## How does it work?
 
-All contributed content\* is parsed and indexed on successful push commits to the `main` branch. The indexed results are accessible via the search functionality which can be found at the GitHub Pages [deployement](./deployments/activity_log?environment=github-pages) of the repository.
+All contributed content\* is parsed and indexed on successful push commits to the `main` branch. The indexed results are accessible via the search functionality which can be found at the GitHub Pages [deployment](../../deployments/activity_log?environment=github-pages) of the repository.
 
 \* Currently only Markdown Tables are supported (see below). Free Markdown text is an additional feature under consideration.
 
