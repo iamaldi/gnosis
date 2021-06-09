@@ -14,7 +14,7 @@ Contributing to the knowledge base is straight forward. You can add/edit content
 ```md
 # Category, e.g. A1 - Injection 
 
-| Type | Description | Impact | Mitigation | OWASP | CWE |
+| Title | Description | Impact | Mitigation | OWASP | CWE |
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | Text | Text | Text | Text | URL to OWASP | URL to CWE |
 ```
