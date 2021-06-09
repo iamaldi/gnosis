@@ -177,6 +177,7 @@ body::-webkit-scrollbar {
     align-items: center;
     justify-content: center;
     transition: .3s ease;
+    cursor: pointer;
 }
 
 .ToggleButton:hover {
