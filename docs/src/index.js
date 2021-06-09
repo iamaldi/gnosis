@@ -59,12 +59,12 @@ var gnosis = {
         var references;
         var resultItemElem;
         var referenceItemElem;
-        var referenceItemsElem = [];
         var referenceTableElem;
         var resultDetailsElem;
 
         var i = 0;
         results.forEach(result => {
+            var referenceItemsElem = [];
             if(i >= MAX_RESULTS){
                 console.log("[GNOSIS] Maximum number of results displayed reached.");
                 return;
