@@ -48,6 +48,10 @@ var gnosis = {
             }
         }
     },
+    escape(string){
+        // TODO Implement special char escape function
+        return string;
+    },
     displayResults(resultsTable, results) {
         var resultTitleAndDescriptionElem;
         var impactTableElem;
@@ -69,21 +73,21 @@ var gnosis = {
             }
             // fill in the result details
             resultTitleAndDescriptionElem = titleAndDescriptionTable
-                .replace('$title', result.item.title)
-                .replace("$description", result.item.description)
+                .replace('$title', window.gnosis.escape(result.item.title))
+                .replace("$description", window.gnosis.escape(result.item.description))
                 .replace("$arrowDown", arrowDown);
 
             impactTableElem = impactTable
-                .replace("$impact", result.item.impact);
+                .replace("$impact", window.gnosis.escape(result.item.impact));
 
             mitigationTableElem = mitigationTable
-                .replace("$mitigation", result.item.mitigation);
+                .replace("$mitigation", window.gnosis.escape(result.item.mitigation));
 
             references = result.item.references;
 
             if (references.length > 0) {
                 references.forEach(reference => {
-                    referenceItemElem = referenceItem.replaceAll("$referenceURL", reference);
+                    referenceItemElem = referenceItem.replaceAll("$referenceURL", window.gnosis.escape(reference));
                     referenceItemsElem.push(referenceItemElem);
                 })
                 referenceTableElem = referenceTable.replace("$referenceItems", referenceItemsElem.join(""));
@@ -96,6 +100,7 @@ var gnosis = {
             resultDetailsElem = resultTitleAndDescriptionElem + impactTableElem + mitigationTableElem + referenceTableElem;
             resultItemElem = resultTableItem.replace("$resultDetails", resultDetailsElem);
             resultsTable.innerHTML += resultItemElem;
+            referenceItemsElem = [];
         });
     }
 };
