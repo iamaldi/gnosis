@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/iamaldi/gnosis#readme",
   "dependencies": {
+    "fuse.js": "^6.4.6",
     "markdown-it": "^12.0.6"
   }
 }

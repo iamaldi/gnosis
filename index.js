@@ -1,15 +1,16 @@
-var md = require('markdown-it')();
-var fs = require('fs');
-var path = require('path');
+const md = require('markdown-it')();
+const fs = require('fs');
+const path = require('path');
+const Fuse = require('fuse.js');
 
 const ISSUES_DATASET_PATH = __dirname + "/docs/dataset/issues/issues.json";
 const ISSUES_DATASET_INDEX_PATH = __dirname + "/docs/dataset/issues/fuse-index.json";
 const CONTENT_PATH = __dirname + "/content/";
 
 var dataset = [];
+var test = [];
 
-// tokenizing data here should help tokenizing time in the frontend
-// TODO use FuseJS to create the index of the dataset, don't do it in the front-end
+// tokenizing data here should helps with search time in the frontend
 function tokenize(str) {
     var tokenizedArr = str.toLowerCase().split(" ");
     return [...new Set(tokenizedArr)];
@@ -17,18 +18,13 @@ function tokenize(str) {
 
 function addIssueToDataset(rowData) {
     const issue = {
-        tokens: tokenize(
-            rowData[0]
-            + " " + rowData[1]
-            + " " + rowData[2]
-            + " " + rowData[3]),
         title: rowData[0],
         description: rowData[1],
         impact: rowData[2],
         mitigation: rowData[3],
         references: [rowData[4], rowData[5]]
     };
-    // add to dataset
+    // add parsed issue to dataset
     dataset.push(issue);
 }
 
@@ -106,6 +102,14 @@ function writeDatasetToDisk(dataset, datasetDestinationPath) {
     fs.writeFileSync(datasetDestinationPath, JSON.stringify(dataset, null, 4), 'utf8');
 }
 
+function createFuseIndexAndWriteToDisk(dataset, indexDestinationPath) {
+    // Create Fuse index
+    const options = { keys: ['title', 'description', 'impact', 'mitigation', 'references'] };
+    const myIndex = Fuse.createIndex(options.keys, dataset);
+
+    fs.writeFileSync(indexDestinationPath, JSON.stringify(myIndex.toJSON()), 'utf8')
+}
+
 function prepareIssuesDataset(files) {
     var i;
     for (i = 0; i < files.length; i++) {
@@ -126,4 +130,7 @@ findMdFilesInDirRecursive(CONTENT_PATH, (err, results) => {
 
     console.log("[writeDatasetToDisk] Writing dataset to disk.");
     writeDatasetToDisk(dataset, ISSUES_DATASET_PATH);
+
+    console.log("[createFuseIndexAndWriteToDisk] Creating and writing Fuse index to disk.");
+    createFuseIndexAndWriteToDisk(dataset, ISSUES_DATASET_INDEX_PATH);
 });

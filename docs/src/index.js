@@ -29,7 +29,7 @@ var gnosis = {
         var horizontalLine = resultElement.querySelector(".UnderLine");
         var horizontalLineComputedStyle = window.getComputedStyle(horizontalLine);
         var resultElementChildren = resultElement.querySelectorAll(".ExtraInsideTable");
-        
+
         toggleButton.classList.toggle("Rotate");
         tableNumNum.classList.toggle("TableNumNumFocus");
         if (horizontalLineComputedStyle.display === "none") {
@@ -48,7 +48,7 @@ var gnosis = {
             }
         }
     },
-    escape(string){
+    escape(string) {
         // TODO Implement special char escape function
         return string;
     },
@@ -65,7 +65,7 @@ var gnosis = {
         var i = 0;
         results.forEach(result => {
             var referenceItemsElem = [];
-            if(i >= MAX_RESULTS){
+            if (i >= MAX_RESULTS) {
                 console.log("[GNOSIS] Maximum number of results displayed reached.");
                 return;
             } else {
@@ -120,6 +120,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log("[Error] Could not get dataset.")
             }
         }).then(dataset => {
+            window.dataset = dataset;
+        });
+
+    await fetch(ISSUES_DATASET_INDEX_PATH)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.log("[Error] Could not get dataset index.")
+            }
+        }).then(fuseIndex => {
             // TODO find fine-tuned options
             const options = {
                 isCaseSensitive: false,
@@ -129,11 +140,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 includeScore: true,
                 keys: ['title', 'description', 'impact', 'mitigation', 'references']
             }
-            // Create the Fuse index
-            const myIndex = Fuse.createIndex(options.keys, dataset)
-            // dataset loaded, create Fuse instance in the 'tokens' parameter
-            window.fuse = new Fuse(dataset, options, myIndex);
+            // Parse the Fuse index
+            const myindex = Fuse.parseIndex(fuseIndex);
+            // Create Fuse instance
+            window.fuse = new Fuse(window.dataset, options, myindex);
         });
+
+
 
     async function doSearch() {
         var searchTerm = gnosisSearchBar.value;
